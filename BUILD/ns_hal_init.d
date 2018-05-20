@@ -1,0 +1,13 @@
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-hal-mbed-cmsis-rtos/ns_hal_init.c
+.\build\ns_hal_init.o: mbed_config.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-libservice/mbed-client-libservice/ns_types.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/sal-stack-nanostack-eventloop/nanostack-event-loop/eventOS_scheduler.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-hal-mbed-cmsis-rtos/ns_event_loop.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/mbed-client-randlib/mbed-client-randlib/randLIB.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/sal-stack-nanostack-eventloop/nanostack-event-loop/platform/arm_hal_timer.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/sal-stack-nanostack-eventloop/nanostack-event-loop/platform/eventloop_config.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-libservice/mbed-client-libservice/ns_trace.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/mbed-trace/mbed-trace/mbed_trace.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-hal-mbed-cmsis-rtos/arm_hal_interrupt_private.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-hal-mbed-cmsis-rtos/ns_hal_init.h
+.\build\ns_hal_init.o: mbed-os/features/FEATURE_COMMON_PAL/nanostack-libservice/mbed-client-libservice/nsdynmemLIB.h
