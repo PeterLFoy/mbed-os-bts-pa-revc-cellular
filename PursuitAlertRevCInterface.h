@@ -24,28 +24,28 @@
 #include "PinDetect.h"
 
 // LEDs
-DigitalOut led0(LED0);  								// by default DigtalOut is set to use push pull 
-DigitalOut led1(LED1);
-DigitalOut led2(LED2);
-DigitalOut purstled(PURST_LED);
-DigitalOut emergled(EMERG_LED);
-DigitalOut spareled(SPARE_LED);
-DigitalOut dropled(DROP_LED);
+DigitalOut led0_n(LED0);  								// by default DigtalOut is set to use push pull 
+DigitalOut led1_n(LED1);
+DigitalOut led2_n(LED2);
+DigitalOut purstled_n(PURST_LED);
+DigitalOut emergled_n(EMERG_LED);
+DigitalOut spareled_n(SPARE_LED);
+DigitalOut dropled_n(DROP_LED);
 DigitalOut poweronled(POWERON_LED);
-DigitalOut redled(RED_LED);
-DigitalOut greenled(GREEN_LED);
-DigitalOut blueled(BLUE_LED);
+DigitalOut redled_n(RED_LED);
+DigitalOut greenled_n(GREEN_LED);
+DigitalOut blueled_n(BLUE_LED);
 
 // Push Buttons 
-DigitalIn	purstpb(PURST_PB);						// by default DigtalIn is set to use pull down 
-DigitalIn	emergpb(EMERG_PB);
-DigitalIn	sparepb(SPARE_PB);
-DigitalIn	droppb(DROP_PB);
+//DigitalIn	purstpb(PURST_PB);						// by default DigtalIn is set to use pull down 
+//DigitalIn	emergpb(EMERG_PB);
+//DigitalIn	sparepb(SPARE_PB);
+//DigitalIn	droppb(DROP_PB);
 
-PinDetect pushb1(PURST_PB);
-PinDetect	pushb2(EMERG_PB);
-PinDetect	pushb3(SPARE_PB);
-PinDetect	pushb4(DROP_PB);
+PinDetect purstpb(PURST_PB);
+PinDetect	emergpb(EMERG_PB);
+PinDetect	sparepb(SPARE_PB);
+PinDetect	droppb(DROP_PB);
 
 // Enables for LED output driver
 DigitalOut GPA_EN_n(PB12);     					// GPA_EN_n (active low)
@@ -59,12 +59,16 @@ Serial wifi(WIFI_TX, WIFI_RX); 					// Serial coms to Ethernet/Wi-Fi WF121
 
 // Cellular modem control
 //DigitalOut skywire_power(PA4); 				// ?
-DigitalOut cell_reset(PF5, OpenDrain);  // When High Cell is Reset
+DigitalOut cell_reset(PE14);  					// When High Cell is Reset
 DigitalOut cell_rts(PE13);							// CTS and RTS are connected
-DigitalOut cell_on(PF4);    						// Turn on  modem
+DigitalOut cell_on(PF3);    						// Turn on  modem
 DigitalIn cell_cts(PE12);								// CTS and RTS are connected
 DigitalIn cell_ring(PF4, PullUp);				// 
 DigitalOut cell_wake(PE8); 							// 
+
+DigitalOut BG96_reset(PE14);
+//DigitalOut VBAT_3V8_EN(D11);
+DigitalOut BG96_PWRKEY(PF3);
 
 // Wi-Fi control signals
 DigitalOut wifi_cts(PC4); 

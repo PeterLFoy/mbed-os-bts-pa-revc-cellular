@@ -347,14 +347,16 @@ WIP/lwip-interface/lwip/src/include/netif/ppp -Imbed-os/features/FEATURE_LWIP/l
 wip-interface/lwip/src/include/netif/ppp/polarssl -Imbed-os/features/FEATURE_LW
 IP/lwip-interface/lwip/src/netif -Imbed-os/features/FEATURE_LWIP/lwip-interface
 /lwip/src/netif/ppp -Imbed-os/features/FEATURE_LWIP/lwip-interface/lwip/src/net
-if/ppp/polarssl -I.\RTE\_mbed-os-bts-pa-cellular -IC:\Keil_v5\ARM\PACK\SiliconL
-abs\EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM32WG\Include -IC:\Keil_v5\ARM\CMSIS
-\Include -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0 --predefine="__UVI
-SION_VERSION SETA 525" --predefine="EFM32WG990F256 SETA 1" --cpreproc_opts=-D__
-ASSERT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-DARM_MATH_CM4,-D__FPU_PRESENT=1,-D__
-MBED_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACTION_QUEUE_SIZE_SPI=4,-DMBED_TICKLES
-S,-DMBEDTLS_CONFIG_HW_SUPPORT --list=.\build\irq_cm4f.lst mbed-os/rtos/TARGET_C
-ORTEX/rtx5/RTX/Source/TOOLCHAIN_ARM/TARGET_RTOS_M4_M7/irq_cm4f.S
+if/ppp/polarssl -I.\BG96 -I.\BG96\ATParser -I.\BG96\ATParser\BufferedSerial -I.
+\BG96\ATParser\BufferedSerial\Buffer -I.\RTE\_mbed-os-bts-pa-cellular -IC:\Keil
+_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM32WG\Include -
+IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4
+.0 --predefine="__UVISION_VERSION SETA 525" --predefine="EFM32WG990F256 SETA 1"
+ --cpreproc_opts=-D__ASSERT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-DARM_MATH_CM4,-
+D__FPU_PRESENT=1,-D__MBED_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACTION_QUEUE_SIZE
+_SPI=4,-DMBED_TICKLESS,-DMBEDTLS_CONFIG_HW_SUPPORT --list=.\build\irq_cm4f.lst 
+mbed-os/rtos/TARGET_CORTEX/rtx5/RTX/Source/TOOLCHAIN_ARM/TARGET_RTOS_M4_M7/irq_
+cm4f.S
 
 
 

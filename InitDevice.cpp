@@ -20,6 +20,7 @@
 #include "em_chip.h"
 #include "em_assert.h"
 #include "em_gpio.h"
+#include "em_leuart.h"
 #include "em_usart.h"
 // [Library includes]$
 
@@ -33,14 +34,8 @@ extern void enter_DefaultMode_from_RESET(void) {
 	USART0_enter_DefaultMode_from_RESET();
 	USART1_enter_DefaultMode_from_RESET();
 	USART2_enter_DefaultMode_from_RESET();
+	LEUART0_enter_DefaultMode_from_RESET();
 	PORTIO_enter_DefaultMode_from_RESET();
-	GPIO_PinModeSet((GPIO_Port_TypeDef) AF_USART1_TX_PORT(gpioPortC), AF_USART1_TX_PIN (USART0_TX_PIN), gpioModePushPull, 1);
-  GPIO_PinModeSet((GPIO_Port_TypeDef) AF_USART1_RX_PORT(gpioPortC), AF_USART1_RX_PIN (USART0_RX_PIN), gpioModeInput, 0);
-
-  GPIO_PinModeSet((GPIO_Port_TypeDef)AF_USART0_TX_PORT(gpioPortE), AF_USART0_TX_PIN(USART1_TX_PIN), gpioModePushPull, 1);
-  GPIO_PinModeSet((GPIO_Port_TypeDef)AF_USART0_RX_PORT(gpioPortE), AF_USART0_RX_PIN(USART1_RX_PIN), gpioModeInput, 0);
-
-	
 	// [Config Calls]$
 
 }
@@ -93,17 +88,22 @@ extern void CMU_enter_DefaultMode_from_RESET(void) {
 
 	// $[High Frequency Clock select]
 	/* Using HFXO as high frequency clock, HFCLK */
-	//CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
 
 	/* Enable peripheral clock */
-	//CMU_ClockEnable(cmuClock_HFPER, true);
+	CMU_ClockEnable(cmuClock_HFPER, true);
 
 	// [High Frequency Clock select]$
 
 	// $[LF clock tree setup]
-	/* No LF peripherals enabled */
+	/* Enable LF clocks */
+	CMU_ClockEnable(cmuClock_CORELE, true);
+	CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_LFRCO);
 	// [LF clock tree setup]$
 	// $[Peripheral Clock enables]
+	/* Enable clock for LEUART0 */
+	CMU_ClockEnable(cmuClock_LEUART0, true);
+
 	/* Enable clock for USART0 */
 	CMU_ClockEnable(cmuClock_USART0, true);
 
@@ -265,7 +265,7 @@ extern void USART0_enter_DefaultMode_from_RESET(void) {
 #if defined( USART_INPUT_RXPRS ) && defined( USART_CTRL_MVDIS )
 	initasync.mvdis = 0;
 	initasync.prsRxEnable = 0;
-	//initasync.prsRxCh = 0;
+//	initasync.prsRxCh = 0;
 #endif
 
 	USART_InitAsync(USART0, &initasync);
@@ -302,7 +302,7 @@ extern void USART1_enter_DefaultMode_from_RESET(void) {
 #if defined( USART_INPUT_RXPRS ) && defined( USART_CTRL_MVDIS )
 	initasync.mvdis = 0;
 	initasync.prsRxEnable = 0;
-	//initasync.prsRxCh = 0;
+//	initasync.prsRxCh = 0;
 #endif
 
 	USART_InitAsync(USART1, &initasync);
@@ -339,7 +339,7 @@ extern void USART2_enter_DefaultMode_from_RESET(void) {
 #if defined( USART_INPUT_RXPRS ) && defined( USART_CTRL_MVDIS )
 	initasync.mvdis = 0;
 	initasync.prsRxEnable = 0;
-	//initasync.prsRxCh = 0;
+//	initasync.prsRxCh = 0;
 #endif
 
 	USART_InitAsync(USART2, &initasync);
@@ -366,6 +366,19 @@ extern void USART2_enter_DefaultMode_from_RESET(void) {
 extern void LEUART0_enter_DefaultMode_from_RESET(void) {
 
 	// $[LEUART0 initialization]
+	LEUART_Init_TypeDef initleuart = LEUART_INIT_DEFAULT;
+
+	initleuart.enable = leuartEnable;
+	initleuart.baudrate = 9600;
+	initleuart.databits = leuartDatabits8;
+	initleuart.parity = leuartNoParity;
+	initleuart.stopbits = leuartStopbits1;
+	LEUART_Init(LEUART0, &initleuart);
+
+	/* Configuring non-standard properties */
+	LEUART_TxDmaInEM2Enable(LEUART0, 0);
+	LEUART_RxDmaInEM2Enable(LEUART0, 0);
+
 	// [LEUART0 initialization]$
 
 }
@@ -571,48 +584,188 @@ extern void ETM_enter_DefaultMode_from_RESET(void) {
 extern void PORTIO_enter_DefaultMode_from_RESET(void) {
 
 	// $[Port A Configuration]
+
+	/* Pin PA2 is configured to Push-pull */
+	GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+			| GPIO_P_MODEL_MODE2_PUSHPULL;
+
+	/* Pin PA3 is configured to Input enabled with pull-down */
+	GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+			| GPIO_P_MODEL_MODE3_INPUTPULL;
+
+	/* Pin PA4 is configured to Push-pull */
+	GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
+			| GPIO_P_MODEL_MODE4_PUSHPULL;
+
+	/* Pin PA5 is configured to Input enabled with pull-down */
+	GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE5_MASK)
+			| GPIO_P_MODEL_MODE5_INPUTPULL;
+
+	/* Pin PA6 is configured to Push-pull */
+	GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE6_MASK)
+			| GPIO_P_MODEL_MODE6_PUSHPULL;
+
+	/* Pin PA8 is configured to Push-pull */
+	GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+			| GPIO_P_MODEH_MODE8_PUSHPULL;
+
+	/* Pin PA9 is configured to Input enabled with pull-down */
+	GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+			| GPIO_P_MODEH_MODE9_INPUTPULL;
+
+	/* Pin PA10 is configured to Push-pull */
+	GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+			| GPIO_P_MODEH_MODE10_PUSHPULL;
+
+	/* Pin PA15 is configured to Input enabled with pull-down */
+	GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE15_MASK)
+			| GPIO_P_MODEH_MODE15_INPUTPULL;
 	// [Port A Configuration]$
 
 	// $[Port B Configuration]
+
+	/* Pin PB11 is configured to Push-pull */
+	GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+			| GPIO_P_MODEH_MODE11_PUSHPULL;
+
+	/* Pin PB12 is configured to Push-pull */
+	GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE12_MASK)
+			| GPIO_P_MODEH_MODE12_PUSHPULL;
 	// [Port B Configuration]$
 
 	// $[Port C Configuration]
 
 	/* Pin PC0 is configured to Push-pull */
+	GPIO->P[2].DOUT |= (1 << 0);
 	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
 			| GPIO_P_MODEL_MODE0_PUSHPULL;
 
-	/* Pin PC1 is configured to Input enabled */
+	/* Pin PC1 is configured to Input enabled with filter */
+	GPIO->P[2].DOUT |= (1 << 1);
 	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
 			| GPIO_P_MODEL_MODE1_INPUT;
 
 	/* Pin PC2 is configured to Push-pull */
+	GPIO->P[2].DOUT |= (1 << 2);
 	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
 			| GPIO_P_MODEL_MODE2_PUSHPULL;
 
 	/* Pin PC3 is configured to Input enabled */
 	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
 			| GPIO_P_MODEL_MODE3_INPUT;
+
+	/* Pin PC4 is configured to Input enabled with pull-down */
+	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
+			| GPIO_P_MODEL_MODE4_INPUTPULL;
+
+	/* Pin PC5 is configured to Push-pull */
+	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE5_MASK)
+			| GPIO_P_MODEL_MODE5_PUSHPULL;
+
+	/* Pin PC6 is configured to Push-pull */
+	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE6_MASK)
+			| GPIO_P_MODEL_MODE6_PUSHPULL;
+
+	/* Pin PC7 is configured to Input enabled with pull-up */
+	GPIO->P[2].DOUT |= (1 << 7);
+	GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE7_MASK)
+			| GPIO_P_MODEL_MODE7_INPUTPULL;
+
+	/* Pin PC11 is configured to Input enabled with pull-up */
+	GPIO->P[2].DOUT |= (1 << 11);
+	GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+			| GPIO_P_MODEH_MODE11_INPUTPULL;
+
+	/* Pin PC12 is configured to Input enabled with pull-up */
+	GPIO->P[2].DOUT |= (1 << 12);
+	GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE12_MASK)
+			| GPIO_P_MODEH_MODE12_INPUTPULL;
+
+	/* Pin PC13 is configured to Push-pull */
+	GPIO->P[2].DOUT |= (1 << 13);
+	GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+			| GPIO_P_MODEH_MODE13_PUSHPULL;
+
+	/* Pin PC14 is configured to Push-pull */
+	GPIO->P[2].DOUT |= (1 << 14);
+	GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+			| GPIO_P_MODEH_MODE14_PUSHPULL;
+
+	/* Pin PC15 is configured to Push-pull */
+	GPIO->P[2].DOUT |= (1 << 15);
+	GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE15_MASK)
+			| GPIO_P_MODEH_MODE15_PUSHPULL;
 	// [Port C Configuration]$
 
 	// $[Port D Configuration]
+
+	/* Pin PD4 is configured to Push-pull */
+	GPIO->P[3].DOUT |= (1 << 4);
+	GPIO->P[3].MODEL = (GPIO->P[3].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
+			| GPIO_P_MODEL_MODE4_PUSHPULL;
+
+	/* Pin PD5 is configured to Input enabled */
+	GPIO->P[3].MODEL = (GPIO->P[3].MODEL & ~_GPIO_P_MODEL_MODE5_MASK)
+			| GPIO_P_MODEL_MODE5_INPUT;
+
+	/* Pin PD8 is configured to Push-pull */
+	GPIO->P[3].MODEH = (GPIO->P[3].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+			| GPIO_P_MODEH_MODE8_PUSHPULL;
 	// [Port D Configuration]$
 
 	// $[Port E Configuration]
 
+	/* Pin PE8 is configured to Push-pull */
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+			| GPIO_P_MODEH_MODE8_PUSHPULL;
+
+	/* Pin PE9 is configured to Push-pull */
+	GPIO->P[4].DOUT |= (1 << 9);
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+			| GPIO_P_MODEH_MODE9_PUSHPULL;
+
 	/* Pin PE10 is configured to Push-pull */
+	GPIO->P[4].DOUT |= (1 << 10);
 	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
 			| GPIO_P_MODEH_MODE10_PUSHPULL;
 
 	/* Pin PE11 is configured to Input enabled */
 	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
 			| GPIO_P_MODEH_MODE11_INPUT;
+
+	/* Pin PE12 is configured to Input enabled with pull-down */
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE12_MASK)
+			| GPIO_P_MODEH_MODE12_INPUTPULL;
+
+	/* Pin PE13 is configured to Push-pull */
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+			| GPIO_P_MODEH_MODE13_PUSHPULL;
+
+	/* Pin PE14 is configured to Push-pull */
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+			| GPIO_P_MODEH_MODE14_PUSHPULL;
+
+	/* Pin PE15 is configured to Push-pull */
+	GPIO->P[4].MODEH = (GPIO->P[4].MODEH & ~_GPIO_P_MODEH_MODE15_MASK)
+			| GPIO_P_MODEH_MODE15_PUSHPULL;
 	// [Port E Configuration]$
 
 	// $[Port F Configuration]
+
+	/* Pin PF3 is configured to Push-pull */
+	GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+			| GPIO_P_MODEL_MODE3_PUSHPULL;
+
+	/* Pin PF4 is configured to Input enabled with pull-up */
+	GPIO->P[5].DOUT |= (1 << 4);
+	GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
+			| GPIO_P_MODEL_MODE4_INPUTPULL;
 	// [Port F Configuration]$
 
 	// $[Route Configuration]
+
+	/* Enable signals RX, TX */
+	LEUART0->ROUTE |= LEUART_ROUTE_RXPEN | LEUART_ROUTE_TXPEN;
 
 	/* Enable signals RX, TX */
 	USART0->ROUTE |= USART_ROUTE_RXPEN | USART_ROUTE_TXPEN;
@@ -625,3 +778,4 @@ extern void PORTIO_enter_DefaultMode_from_RESET(void) {
 	// [Route Configuration]$
 
 }
+

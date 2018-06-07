@@ -333,14 +333,15 @@ lwip-interface/lwip/src/include/netif/ppp -Imbed-os/features/FEATURE_LWIP/lwip-
 interface/lwip/src/include/netif/ppp/polarssl -Imbed-os/features/FEATURE_LWIP/l
 wip-interface/lwip/src/netif -Imbed-os/features/FEATURE_LWIP/lwip-interface/lwi
 p/src/netif/ppp -Imbed-os/features/FEATURE_LWIP/lwip-interface/lwip/src/netif/p
-pp/polarssl -I.\RTE\_mbed-os-bts-pa-cellular -IC:\Keil_v5\ARM\PACK\SiliconLabs\
-EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM32WG\Include -IC:\Keil_v5\ARM\CMSIS\Inc
-lude -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0 --predefine="__UVISION
-_VERSION SETA 525" --predefine="EFM32WG990F256 SETA 1" --cpreproc_opts=-D__ASSE
-RT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-DARM_MATH_CM4,-D__FPU_PRESENT=1,-D__MBED
-_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACTION_QUEUE_SIZE_SPI=4,-DMBED_TICKLESS,-D
-MBEDTLS_CONFIG_HW_SUPPORT --list=.\build\except.lst mbed-os/rtos/TARGET_CORTEX/
-TARGET_CORTEX_M/TOOLCHAIN_ARM/except.S
+pp/polarssl -I.\BG96 -I.\BG96\ATParser -I.\BG96\ATParser\BufferedSerial -I.\BG9
+6\ATParser\BufferedSerial\Buffer -I.\RTE\_mbed-os-bts-pa-cellular -IC:\Keil_v5\
+ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM32WG\Include -IC:\
+Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0 -
+-predefine="__UVISION_VERSION SETA 525" --predefine="EFM32WG990F256 SETA 1" --c
+preproc_opts=-D__ASSERT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-DARM_MATH_CM4,-D__F
+PU_PRESENT=1,-D__MBED_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACTION_QUEUE_SIZE_SPI
+=4,-DMBED_TICKLESS,-DMBEDTLS_CONFIG_HW_SUPPORT --list=.\build\except.lst mbed-o
+s/rtos/TARGET_CORTEX/TARGET_CORTEX_M/TOOLCHAIN_ARM/except.S
 
 
 

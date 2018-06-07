@@ -19,9 +19,14 @@
 #include "UDPSocket.h"
 #include "OnboardCellularInterface.h"
 #include "PursuitAlertRevCInterface.h"
-#include "PinDetect.h"
+//#include "PinDetect.h"
 #include "InitDevice.h"
 #include "setupSWOForPrint.h" 		/******* Redirect print(); to SWO via debug printf viewer  *******/
+//#include "NL_SW_LTE_TSVG.h"
+//#include "BG96.h"
+#include "PWPBG96.h"
+//#include "BG96Interface.h"
+
 
 
 #define UDP 0
@@ -199,28 +204,30 @@ nsapi_error_t test_send_recv()
     return -1;
 }
 
+
 void keyPressedPB1( void ) {
-    redled = 0;  //Red
-    blueled = 1;  //Blue
-    greenled = 1;  //Green
+    redled_n = 0;  //Red
+    blueled_n = 1;  //Blue
+    greenled_n = 1;  //Green
 }
 
 void keyPressedPB2( void ) {
-    redled = 1;  //Red
-    blueled = 0;  //Blue 
-    greenled = 1;	 //Green
+    redled_n = 1;  //Red
+    blueled_n = 0;  //Blue 
+    greenled_n = 1;	 //Green
 }
 void keyPressedPB3( void ) {
-    redled = 1;  //Red
-    blueled = 1;  //Blue 
-    greenled = 0;	 //Green
+    redled_n = 1;  //Red
+    blueled_n = 1;  //Blue 
+    greenled_n = 0;	 //Green
 }
 
 void keyPressedPB4( void ) {
-    redled = 0;  //Red
-    blueled = 0;  //Blue 
-    greenled = 1;	 //Green
+    redled_n = 0;  //Red
+    blueled_n = 0;  //Blue 
+    greenled_n = 1;	 //Green
 }
+
 
 
 int main()
@@ -234,16 +241,70 @@ int main()
 				print("Hello World %d!", 2018);
 			};
 	 /******* Redirect print(); to SWO via debug printf viewer  *******/
-	
-	  pushb1.mode( PullDown );
-    pushb1.attach_asserted( &keyPressedPB1 );
-    pushb2.mode( PullDown );
-    pushb2.attach_asserted( &keyPressedPB2 );
-	  pushb3.mode( PullDown );
-    pushb3.attach_asserted( &keyPressedPB3 );
-	  pushb4.mode( PullDown );
-    pushb4.attach_asserted( &keyPressedPB4 );	
-	
+	    //  GPA_EN_n (active low) for output pins GPO0_MCU - GPO2_MCU
+			//  GPB_EN_n (active low) for output pins GPO3_MCU, GREEN_LED, RED_LED, BLUE_LED
+		GPA_EN_n  = 0;
+		GPB_EN_n	= 0; 
+		wait(2);
+	/*		
+    
+		purstled_n = 1;
+		purstled_n = 0;  // active low
+				wait(4);
+		emergled_n = 1;
+		emergled_n = 0;
+					wait(4);
+		spareled_n = 1;
+		spareled_n = 0;
+					wait(4);
+		dropled_n  = 1;
+		dropled_n  = 0;  // active low
+					wait(4);
+			*/
+		redled_n = 1;  //Red
+		greenled_n = 1;	 //Green
+    blueled_n = 0;  //Blue 
+		/*
+ 					wait(4);
+		redled_n = 0;  //Red
+		greenled_n = 1;	 //Green
+    blueled_n = 1;  //Blue 
+					wait(4);
+		redled_n = 1;  //Red
+		greenled_n = 0;	 //Green
+    blueled_n = 1;  //Blue 		
+		*/
+			
+			    print("System Clock: %d Hz\n", SystemCoreClock);				// 48_000_000
+					print("Unique ID: %d \n", SYSTEM_GetUnique);						// 
+		print("HF Peripheral Clock: %d Hz\n", cmuClock_HFPER); // 295_232 Hz
+		print("USART0 rx/tx Clock:  %d Hz\n", cmuClock_USART0); // 262_656 Hz
+		print("USART1 rx/tx Clock:  %d Hz\n", cmuClock_USART1); // 266_752 Hz
+		print("USART2 rx/tx Clock:  %d Hz\n", cmuClock_USART2); // 270_848 Hz
+		print("USART0 TX Pin: %d \n", USART0_TX_PIN);		
+		print("USART0 RX Pin: %d \n", USART0_RX_PIN);
+		print("USART1 TX Pin: %d \n", USART1_TX_PIN);		
+		print("USART1 RX Pin: %d \n", USART1_RX_PIN);
+		print("USART2 TX Pin: %d \n", USART2_TX_PIN);		
+		print("USART3 RX Pin: %d \n", USART2_RX_PIN);
+		
+//		NL_SW_LTE_TSVG_test(); 
+		PWP_SW_BG96_test();
+
+//		BG96 d; 
+//		bool strt = d.startup(0);
+//strt = BG96::BG96.startup(0);
+
+	  purstpb.mode( PullDown );
+    purstpb.attach_asserted( &keyPressedPB1 );
+    emergpb.mode( PullDown );
+    emergpb.attach_asserted( &keyPressedPB2 );
+	  sparepb.mode( PullDown );
+    sparepb.attach_asserted( &keyPressedPB3 );
+	  droppb.mode( PullDown );
+    droppb.attach_asserted( &keyPressedPB4 );	
+		
+		
     iface.modem_debug_on(MBED_CONF_APP_MODEM_TRACE);
     /* Set Pin code for SIM card */
     iface.set_sim_pin(MBED_CONF_APP_SIM_PIN_CODE);

@@ -64,4 +64,5 @@
 .\build\initdevice.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_assert.h
 .\build\initdevice.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_chip.h
 .\build\initdevice.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_gpio.h
+.\build\initdevice.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_leuart.h
 .\build\initdevice.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_usart.h

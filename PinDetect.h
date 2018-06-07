@@ -4,6 +4,7 @@
 #ifndef MBED_H
 #include "mbed.h"
 #endif
+#include "PursuitAlertRevCInterface.h"
  
 #ifndef PINDETECT_PIN_ASSTERED
 #define PINDETECT_PIN_ASSTERED   1

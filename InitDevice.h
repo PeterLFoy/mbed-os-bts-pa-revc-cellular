@@ -58,6 +58,12 @@ extern void PORTIO_enter_DefaultMode_from_RESET(void);
 #define HFXO_P_PIN          (13)
 #define HFXO_P_PORT         (gpioPortB)
 
+#define LEUART0_RX_PIN      (5)
+#define LEUART0_RX_PORT     (gpioPortD)
+
+#define LEUART0_TX_PIN      (4)
+#define LEUART0_TX_PORT     (gpioPortD)
+
 #define USART0_RX_PIN       (11)
 #define USART0_RX_PORT      (gpioPortE)
 

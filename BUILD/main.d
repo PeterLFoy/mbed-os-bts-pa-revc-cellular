@@ -239,4 +239,7 @@
 .\build\main.o: mbed-os/hal/pinmap.h
 .\build\main.o: mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/emlib/inc/em_system.h
 .\build\main.o: PinDetect.h
+.\build\main.o: PursuitAlertRevCInterface.h
 .\build\main.o: InitDevice.h
+.\build\main.o: setupSWOForPrint.h
+.\build\main.o: .\BG96\PWPBG96.h

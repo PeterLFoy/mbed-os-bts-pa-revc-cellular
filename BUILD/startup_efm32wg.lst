@@ -556,15 +556,16 @@ ures/FEATURE_LWIP/lwip-interface/lwip/src/include/netif/ppp -Imbed-os/features/
 FEATURE_LWIP/lwip-interface/lwip/src/include/netif/ppp/polarssl -Imbed-os/featu
 res/FEATURE_LWIP/lwip-interface/lwip/src/netif -Imbed-os/features/FEATURE_LWIP/
 lwip-interface/lwip/src/netif/ppp -Imbed-os/features/FEATURE_LWIP/lwip-interfac
-e/lwip/src/netif/ppp/polarssl -I.\RTE\_mbed-os-bts-pa-cellular -IC:\Keil_v5\ARM
-\PACK\SiliconLabs\EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM32WG\Include -IC:\Kei
-l_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0 --pr
-edefine="__UVISION_VERSION SETA 525" --predefine="EFM32WG990F256 SETA 1" --cpre
-proc_opts=-D__ASSERT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-DARM_MATH_CM4,-D__FPU_
-PRESENT=1,-D__MBED_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACTION_QUEUE_SIZE_SPI=4,
--DMBED_TICKLESS,-DMBEDTLS_CONFIG_HW_SUPPORT --list=.\build\startup_efm32wg.lst 
-mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/TARGET_EFM32WG/device/TARGET_2
-56K/TOOLCHAIN_ARM_STD/startup_efm32wg.S
+e/lwip/src/netif/ppp/polarssl -I.\BG96 -I.\BG96\ATParser -I.\BG96\ATParser\Buff
+eredSerial -I.\BG96\ATParser\BufferedSerial\Buffer -I.\RTE\_mbed-os-bts-pa-cell
+ular -IC:\Keil_v5\ARM\PACK\SiliconLabs\EFM32WG_DFP\5.4.0\Device\SiliconLabs\EFM
+32WG\Include -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\PACK\SiliconLabs\E
+FM32WG_DFP\5.4.0 --predefine="__UVISION_VERSION SETA 525" --predefine="EFM32WG9
+90F256 SETA 1" --cpreproc_opts=-D__ASSERT_MSG,-DEFM32WG990F256,-D__CORTEX_M4,-D
+ARM_MATH_CM4,-D__FPU_PRESENT=1,-D__MBED_CMSIS_RTOS_CM,-D__CMSIS_RTOS,-DTRANSACT
+ION_QUEUE_SIZE_SPI=4,-DMBED_TICKLESS,-DMBEDTLS_CONFIG_HW_SUPPORT --list=.\build
+\startup_efm32wg.lst mbed-os/targets/TARGET_Silicon_Labs/TARGET_EFM32/TARGET_EF
+M32WG/device/TARGET_256K/TOOLCHAIN_ARM_STD/startup_efm32wg.S
 
 
 
